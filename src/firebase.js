@@ -30,3 +30,8 @@ onAuthStateChanged(auth, (user) => {
     signInAnonymously(auth).catch(console.error);
   }
 });
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log("🔥 Firebase UID:", user.uid, "익명:", user.isAnonymous);
+  }
+});
