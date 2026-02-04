@@ -13,17 +13,30 @@ export default function Home() {
   const [adminPin, setAdminPin] = useState("");
 const [isAdmin, setIsAdmin] = useState(false);
 const ADMIN_PIN = "yoon511"; // 너가 쓰는 관리자 암호
+const [userEmail, setUserEmail] = useState("");
+const [isGoogleAdmin, setIsGoogleAdmin] = useState(false);
 
-async function adminGoogleLogin() {
+
+async function onGoogleLogin() {
   try {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
     alert("구글 로그인 완료!");
   } catch (e) {
     console.error(e);
-    alert("구글 로그인 실패");
+    alert("구글 로그인 실패!");
   }
 }
+
+async function onGoogleLogout() {
+  try {
+    await signOut(auth);
+    alert("로그아웃 완료!");
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 
 async function adminGoogleLogout() {
   try {
@@ -45,6 +58,14 @@ async function adminGoogleLogout() {
     const unsub = subscribePolls(setPolls);
     return () => unsub();
   }, []);
+
+useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (user) => {
+    setUserEmail(user?.email || "");
+  });
+  return () => unsub();
+}, []);
+
 
   function onAdminLogin() {
   if (!adminPin.trim()) {
@@ -240,23 +261,19 @@ const chipBtnActive = (bg, color, borderColor) => ({
 
           <div style={{ height: 10 }} />
 
-          {isAdmin ? (
-            <button onClick={onAdminLogout} style={styles.button}>
-              로그아웃
-            </button>
-          ) : (
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <input
-                value={adminPin}
-                onChange={(e) => setAdminPin(e.target.value)}
-                placeholder="관리자 암호"
-                style={styles.input}
-              />
-              <button onClick={onAdminLogin} style={styles.button}>
-                관리자 로그인
-              </button>
-            </div>
-          )}
+          {userEmail ? (
+  <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+    <span style={styles.pill}>✅ {userEmail}</span>
+    <button onClick={onGoogleLogout} style={styles.button}>
+      구글 로그아웃
+    </button>
+  </div>
+) : (
+  <button onClick={onGoogleLogin} style={styles.button}>
+    Google로 관리자 로그인
+  </button>
+)}
+
         </div>
 
         {/* Create Card */}
