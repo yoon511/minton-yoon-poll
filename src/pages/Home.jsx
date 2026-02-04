@@ -58,6 +58,23 @@ function onAdminLogout() {
     await refresh();
   }
 
+async function onDeletePoll(e, pollId) {
+  e.preventDefault();   // Link 이동 막기
+  e.stopPropagation();  // 카드 클릭 이벤트 막기
+
+  const ok = window.confirm("정말 이 투표를 삭제할까?");
+  if (!ok) return;
+
+  try {
+    await deletePoll(pollId);
+    await refresh(); // 목록 다시 불러오기
+  } catch (err) {
+    console.error(err);
+    alert("삭제에 실패했어. 잠시 후 다시 시도해줘!");
+  }
+}
+
+
   const styles = useMemo(() => {
     const chipBtn = {
   display: "inline-flex",
@@ -287,7 +304,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
 
           <div style={{ height: 10 }} />
 
-          {polls.length === 0 ? (
+                    {polls.length === 0 ? (
             <div style={{ ...styles.card, padding: 16 }}>
               <p style={{ margin: 0, color: "rgba(17,24,39,0.65)" }}>
                 아직 투표가 없어. 위에서 하나 만들어봐!
@@ -336,94 +353,59 @@ const chipBtnActive = (bg, color, borderColor) => ({
                   </div>
 
                   <div
-  style={{
-    display: "flex",
-    gap: 8,
-    alignItems: "center",
-    flexWrap: "wrap",
-  }}
->
-  <Link
-    to={`/poll/${p.id}`}
-    style={styles.pill}
-    onClick={(e) => e.stopPropagation()}
-  >
-    📌 투표
-  </Link>
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <Link
+                      to={`/poll/${p.id}`}
+                      style={styles.pill}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      📌 투표
+                    </Link>
 
-  <Link
-    to={`/poll/${p.id}/matches`}
-    style={{ ...styles.pill, background: "rgba(99,102,241,0.12)", color: "#3730a3" }}
-    onClick={(e) => e.stopPropagation()}
-  >
-    🗓️ 경기
-  </Link>
+                    <Link
+                      to={`/poll/${p.id}/matches`}
+                      style={{ ...styles.pill, background: "rgba(99,102,241,0.12)", color: "#3730a3" }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      🗓️ 경기
+                    </Link>
 
-  <Link
-    to={`/poll/${p.id}/ranking`}
-    style={{ ...styles.pill, background: "rgba(34,197,94,0.12)", color: "#065f46" }}
-    onClick={(e) => e.stopPropagation()}
-  >
-    🏆 랭킹
-  </Link>
-</div>
-{isAdmin && (
-  <button
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      {isAdmin && (
-  <button
-    onClick={async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+                    <Link
+                      to={`/poll/${p.id}/ranking`}
+                      style={{ ...styles.pill, background: "rgba(34,197,94,0.12)", color: "#065f46" }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      🏆 랭킹
+                    </Link>
 
-      const ok = window.confirm("정말 이 투표를 삭제할까?");
-      if (!ok) return;
-
-      try {
-        await deletePoll(p.id);
-        await refresh(); // subscribePolls가 실시간 반영이면 없어도 되지만, 안전하게 유지 추천
-      } catch (err) {
-        console.error(err);
-        alert("삭제에 실패했어. 잠시 후 다시 시도해줘!");
-      }
-    }}
-    style={{
-      padding: "8px 10px",
-      borderRadius: 12,
-      border: "1px solid rgba(239,68,68,0.25)",
-      background: "rgba(239,68,68,0.10)",
-      color: "#7f1d1d",
-      fontWeight: 800,
-      cursor: "pointer",
-    }}
-  >
-    삭제
-  </button>
-)};
-
-    }}
-    style={{
-      padding: "8px 10px",
-      borderRadius: 12,
-      border: "1px solid rgba(239,68,68,0.25)",
-      background: "rgba(239,68,68,0.10)",
-      color: "#7f1d1d",
-      fontWeight: 800,
-      cursor: "pointer",
-    }}
-  >
-    삭제
-  </button>
-)}
-
-                
+                    {isAdmin && (
+                      <button
+                        onClick={(e) => onDeletePoll(e, p.id)}
+                        style={{
+                          padding: "8px 10px",
+                          borderRadius: 12,
+                          border: "1px solid rgba(239,68,68,0.25)",
+                          background: "rgba(239,68,68,0.10)",
+                          color: "#7f1d1d",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </div>
                 </Link>
               ))}
             </div>
           )}
-        </div>
+
 
         {/* Footer hint */}
         <div style={{ marginTop: 22, color: "rgba(17,24,39,0.45)", fontSize: 12 }}>
