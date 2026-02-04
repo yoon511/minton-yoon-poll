@@ -401,7 +401,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
   >
     삭제
   </button>
-)}
+)};
 
     }}
     style={{
