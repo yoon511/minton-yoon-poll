@@ -92,6 +92,48 @@ export async function upsertRegistration(pollId, reg) {
     { merge: true }
   );
 }
+export async function deletePoll(pollId) {
+  const pollRef = doc(db, "polls", pollId);
+
+  // subcollections
+  const regsCol = collection(db, "polls", pollId, "registrations");
+  const matchesCol = collection(db, "polls", pollId, "matches");
+
+  // 1) registrations 삭제
+  const regsSnap = await getDocs(regsCol);
+  let batch = writeBatch(db);
+  let count = 0;
+
+  for (const d of regsSnap.docs) {
+    batch.delete(d.ref);
+    count++;
+    if (count >= 450) { // batch 제한 여유
+      await batch.commit();
+      batch = writeBatch(db);
+      count = 0;
+    }
+  }
+  if (count > 0) await batch.commit();
+
+  // 2) matches 삭제
+  const matchSnap = await getDocs(matchesCol);
+  batch = writeBatch(db);
+  count = 0;
+
+  for (const d of matchSnap.docs) {
+    batch.delete(d.ref);
+    count++;
+    if (count >= 450) {
+      await batch.commit();
+      batch = writeBatch(db);
+      count = 0;
+    }
+  }
+  if (count > 0) await batch.commit();
+
+  // 3) poll 문서 삭제
+  await deleteDoc(pollRef);
+}
 
 export async function cancelRegistration(pollId, { name, pin }) {
   const regId = `${name}#${pin}`;

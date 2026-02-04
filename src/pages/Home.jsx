@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { createPoll, subscribePolls, listPolls } from "../api";
+import { createPoll, subscribePolls, listPolls, deletePoll } from "../api";
 
 export default function Home() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
   const [polls, setPolls] = useState([]);
+  const [adminPin, setAdminPin] = useState("");
+const [isAdmin, setIsAdmin] = useState(false);
+const ADMIN_PIN = "yoon511"; // 너가 쓰는 관리자 암호
+
 
   async function refresh() {
     const data = await listPolls();
@@ -18,7 +22,30 @@ export default function Home() {
     return () => unsub();
   }, []);
 
+  function onAdminLogin() {
+  if (!adminPin.trim()) {
+    alert("관리자 암호를 입력해줘!");
+    return;
+  }
+
+  if (adminPin !== ADMIN_PIN) {
+    alert("관리자 암호가 틀렸어!");
+    return;
+  }
+
+  setIsAdmin(true);
+  setAdminPin("");
+}
+
+function onAdminLogout() {
+  setIsAdmin(false);
+}
+
+
+
   async function onCreate() {
+    if (!isAdmin) return alert("관리자만 투표를 만들 수 있어!");
+
     if (!date) return alert("날짜를 선택해줘!");
     if (!time) return alert("시간을 선택해줘!");
     if (!location.trim()) return alert("장소를 입력해줘!");
@@ -154,17 +181,57 @@ const chipBtnActive = (bg, color, borderColor) => ({
           </div>
         </div>
 
+{/* 관리자 로그인 */}
+<div style={{ ...styles.card, padding: 16, marginBottom: 16 }}>
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+    <h2 style={{ margin: 0, fontSize: 16 }}>관리자</h2>
+    <span style={styles.pill}>
+      {isAdmin ? "✅ 관리자 모드 ON" : "🔒 관리자 모드 OFF"}
+    </span>
+  </div>
+
+  <div style={{ height: 10 }} />
+
+  {isAdmin ? (
+    <button onClick={onAdminLogout} style={styles.button}>
+      로그아웃
+    </button>
+  ) : (
+    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+      <input
+        value={adminPin}
+        onChange={(e) => setAdminPin(e.target.value)}
+        placeholder="관리자 암호"
+        style={styles.input}
+      />
+      <button onClick={onAdminLogin} style={styles.button}>
+        관리자 로그인
+      </button>
+    </div>
+  )}
+</div>
+
+
         {/* Create Card */}
         <div style={{ ...styles.card, padding: 18 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
-            <div>
-              <h2 style={{ margin: 0, fontSize: 18, letterSpacing: -0.2 }}>모임 투표 만들기</h2>
-              <p style={{ margin: "6px 0 0", color: "rgba(17,24,39,0.6)", fontSize: 13 }}>
-                날짜/시간/장소를 입력하면 투표가 생성돼요.
-              </p>
-            </div>
-            <span style={styles.pill}>✨ quick create</span>
-          </div>
+          <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",      // ✅ 변경
+    gap: 12,
+    flexWrap: "wrap",          // ✅ 추가
+  }}
+>
+  <div>
+    <h2 style={{ margin: 0, fontSize: 18, letterSpacing: -0.2 }}>모임 투표 만들기</h2>
+    <p style={{ margin: "6px 0 0", color: "rgba(17,24,39,0.6)", fontSize: 13 }}>
+      날짜/시간/장소를 입력하면 투표가 생성돼요.
+    </p>
+  </div>
+  <span style={styles.pill}>✨ quick create</span>
+</div>
+
 
           <div style={{ height: 12 }} />
 
@@ -298,7 +365,28 @@ const chipBtnActive = (bg, color, borderColor) => ({
     🏆 랭킹
   </Link>
 </div>
+{isAdmin && (
+  <button
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      alert("여기서 투표 삭제 로직이 들어갈 거야!");
+    }}
+    style={{
+      padding: "8px 10px",
+      borderRadius: 12,
+      border: "1px solid rgba(239,68,68,0.25)",
+      background: "rgba(239,68,68,0.10)",
+      color: "#7f1d1d",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    삭제
+  </button>
+)}
 
+                
                 </Link>
               ))}
             </div>
