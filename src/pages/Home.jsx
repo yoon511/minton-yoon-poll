@@ -213,7 +213,8 @@ const chipBtnActive = (bg, color, borderColor) => ({
 
 
         {/* Create Card */}
-        <div style={{ ...styles.card, padding: 18 }}>
+       {isAdmin && (
+         <div style={{ ...styles.card, padding: 18 }}>
           <div
   style={{
     display: "flex",
@@ -273,6 +274,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
             </button>
           </div>
         </div>
+)}
 
         {/* List */}
         <div style={{ marginTop: 18 }}>
