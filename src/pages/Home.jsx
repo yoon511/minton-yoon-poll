@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { createPoll, subscribePolls, listPolls, deletePoll } from "../api";
+import { auth } from "../firebase";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+
 
 export default function Home() {
   const [date, setDate] = useState("");
@@ -10,6 +13,27 @@ export default function Home() {
   const [adminPin, setAdminPin] = useState("");
 const [isAdmin, setIsAdmin] = useState(false);
 const ADMIN_PIN = "yoon511"; // 너가 쓰는 관리자 암호
+
+async function adminGoogleLogin() {
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    alert("구글 로그인 완료!");
+  } catch (e) {
+    console.error(e);
+    alert("구글 로그인 실패");
+  }
+}
+
+async function adminGoogleLogout() {
+  try {
+    await signOut(auth);
+    alert("로그아웃 완료!");
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 
 
   async function refresh() {
