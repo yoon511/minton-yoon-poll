@@ -372,7 +372,37 @@ const chipBtnActive = (bg, color, borderColor) => ({
     onClick={(e) => {
       e.preventDefault();
       e.stopPropagation();
-      alert("여기서 투표 삭제 로직이 들어갈 거야!");
+      {isAdmin && (
+  <button
+    onClick={async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const ok = window.confirm("정말 이 투표를 삭제할까?");
+      if (!ok) return;
+
+      try {
+        await deletePoll(p.id);
+        await refresh(); // subscribePolls가 실시간 반영이면 없어도 되지만, 안전하게 유지 추천
+      } catch (err) {
+        console.error(err);
+        alert("삭제에 실패했어. 잠시 후 다시 시도해줘!");
+      }
+    }}
+    style={{
+      padding: "8px 10px",
+      borderRadius: 12,
+      border: "1px solid rgba(239,68,68,0.25)",
+      background: "rgba(239,68,68,0.10)",
+      color: "#7f1d1d",
+      fontWeight: 800,
+      cursor: "pointer",
+    }}
+  >
+    삭제
+  </button>
+)}
+
     }}
     style={{
       padding: "8px 10px",
