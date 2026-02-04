@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const firebaseConfig = {
   // 👇 여기에 Firebase 콘솔에서 복사한 값 그대로 붙여넣기
@@ -13,3 +14,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+const auth = getAuth(app);
+signInAnonymously(auth).catch(console.error);
