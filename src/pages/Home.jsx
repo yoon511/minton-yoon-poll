@@ -300,7 +300,8 @@ const chipBtnActive = (bg, color, borderColor) => ({
         </div>
 )}
 
-        {/* List */}
+       
+                {/* List */}
         <div style={{ marginTop: 18 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
             <h2 style={{ margin: 0, fontSize: 18, letterSpacing: -0.2 }}>투표 목록</h2>
@@ -311,7 +312,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
 
           <div style={{ height: 10 }} />
 
-                    {polls.length === 0 ? (
+          {polls.length === 0 ? (
             <div style={{ ...styles.card, padding: 16 }}>
               <p style={{ margin: 0, color: "rgba(17,24,39,0.65)" }}>
                 아직 투표가 없어. 위에서 하나 만들어봐!
@@ -359,14 +360,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
                     </div>
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                     <Link
                       to={`/poll/${p.id}`}
                       style={styles.pill}
@@ -412,13 +406,10 @@ const chipBtnActive = (bg, color, borderColor) => ({
               ))}
             </div>
           )}
-
+        </div>
 
         {/* Footer hint */}
         <div style={{ marginTop: 22, color: "rgba(17,24,39,0.45)", fontSize: 12 }}>
           Tip: 목록 카드를 클릭하면 해당 투표 상세 페이지로 이동해요.
         </div>
-      </div>
-    </div>
-  );
-}
+
