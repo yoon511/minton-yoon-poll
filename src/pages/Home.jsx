@@ -166,7 +166,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
     return { card, input, button, pill, linkCard, chipBtn, chipBtnActive };
   }, []);
 
-  return (
+   return (
     <div
       style={{
         minHeight: "100vh",
@@ -205,103 +205,100 @@ const chipBtnActive = (bg, color, borderColor) => ({
           </div>
         </div>
 
-{/* 관리자 로그인 */}
-<div style={{ ...styles.card, padding: 16, marginBottom: 16 }}>
-  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-    <h2 style={{ margin: 0, fontSize: 16 }}>관리자</h2>
-    <span style={styles.pill}>
-      {isAdmin ? "✅ 관리자 모드 ON" : "🔒 관리자 모드 OFF"}
-    </span>
-  </div>
+        {/* 관리자 로그인 */}
+        <div style={{ ...styles.card, padding: 16, marginBottom: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+            <h2 style={{ margin: 0, fontSize: 16 }}>관리자</h2>
+            <span style={styles.pill}>
+              {isAdmin ? "✅ 관리자 모드 ON" : "🔒 관리자 모드 OFF"}
+            </span>
+          </div>
 
-  <div style={{ height: 10 }} />
+          <div style={{ height: 10 }} />
 
-  {isAdmin ? (
-    <button onClick={onAdminLogout} style={styles.button}>
-      로그아웃
-    </button>
-  ) : (
-    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-      <input
-        value={adminPin}
-        onChange={(e) => setAdminPin(e.target.value)}
-        placeholder="관리자 암호"
-        style={styles.input}
-      />
-      <button onClick={onAdminLogin} style={styles.button}>
-        관리자 로그인
-      </button>
-    </div>
-  )}
-</div>
-
+          {isAdmin ? (
+            <button onClick={onAdminLogout} style={styles.button}>
+              로그아웃
+            </button>
+          ) : (
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <input
+                value={adminPin}
+                onChange={(e) => setAdminPin(e.target.value)}
+                placeholder="관리자 암호"
+                style={styles.input}
+              />
+              <button onClick={onAdminLogin} style={styles.button}>
+                관리자 로그인
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Create Card */}
-       {isAdmin && (
-         <div style={{ ...styles.card, padding: 18 }}>
-          <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",      // ✅ 변경
-    gap: 12,
-    flexWrap: "wrap",          // ✅ 추가
-  }}
->
-  <div>
-    <h2 style={{ margin: 0, fontSize: 18, letterSpacing: -0.2 }}>모임 투표 만들기</h2>
-    <p style={{ margin: "6px 0 0", color: "rgba(17,24,39,0.6)", fontSize: 13 }}>
-      날짜/시간/장소를 입력하면 투표가 생성돼요.
-    </p>
-  </div>
-  <span style={styles.pill}>✨ quick create</span>
-</div>
-
-
-          <div style={{ height: 12 }} />
-
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <input
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              type="date"
-              style={{ ...styles.input, minWidth: 170 }}
-              onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px rgba(99,102,241,0.18)")}
-              onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
-            />
-            <input
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              placeholder="시간 (예: 19:00 ~ 21:00)"
-              style={{ ...styles.input, minWidth: 220 }}
-              onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px rgba(99,102,241,0.18)")}
-              onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
-            />
-            <input
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="장소 (예: OO체육관)"
-              style={{ ...styles.input, minWidth: 260, flex: 1 }}
-              onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px rgba(99,102,241,0.18)")}
-              onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
-            />
-
-            <button
-              onClick={onCreate}
-              style={styles.button}
-              onMouseDown={(e) => (e.currentTarget.style.transform = "translateY(1px)")}
-              onMouseUp={(e) => (e.currentTarget.style.transform = "translateY(0px)")}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.95")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+        {isAdmin && (
+          <div style={{ ...styles.card, padding: 18 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: 12,
+                flexWrap: "wrap",
+              }}
             >
-              만들기 →
-            </button>
-          </div>
-        </div>
-)}
+              <div>
+                <h2 style={{ margin: 0, fontSize: 18, letterSpacing: -0.2 }}>모임 투표 만들기</h2>
+                <p style={{ margin: "6px 0 0", color: "rgba(17,24,39,0.6)", fontSize: 13 }}>
+                  날짜/시간/장소를 입력하면 투표가 생성돼요.
+                </p>
+              </div>
+              <span style={styles.pill}>✨ quick create</span>
+            </div>
 
-       
-                {/* List */}
+            <div style={{ height: 12 }} />
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <input
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                type="date"
+                style={{ ...styles.input, minWidth: 170 }}
+                onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px rgba(99,102,241,0.18)")}
+                onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+              />
+              <input
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                placeholder="시간 (예: 19:00 ~ 21:00)"
+                style={{ ...styles.input, minWidth: 220 }}
+                onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px rgba(99,102,241,0.18)")}
+                onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+              />
+              <input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="장소 (예: OO체육관)"
+                style={{ ...styles.input, minWidth: 260, flex: 1 }}
+                onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 4px rgba(99,102,241,0.18)")}
+                onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+              />
+
+              <button
+                onClick={onCreate}
+                style={styles.button}
+                onMouseDown={(e) => (e.currentTarget.style.transform = "translateY(1px)")}
+                onMouseUp={(e) => (e.currentTarget.style.transform = "translateY(0px)")}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.95")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+              >
+                만들기 →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* List */}
         <div style={{ marginTop: 18 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
             <h2 style={{ margin: 0, fontSize: 18, letterSpacing: -0.2 }}>투표 목록</h2>
@@ -361,11 +358,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
                   </div>
 
                   <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                    <Link
-                      to={`/poll/${p.id}`}
-                      style={styles.pill}
-                      onClick={(e) => e.stopPropagation()}
-                    >
+                    <Link to={`/poll/${p.id}`} style={styles.pill} onClick={(e) => e.stopPropagation()}>
                       📌 투표
                     </Link>
 
@@ -412,4 +405,7 @@ const chipBtnActive = (bg, color, borderColor) => ({
         <div style={{ marginTop: 22, color: "rgba(17,24,39,0.45)", fontSize: 12 }}>
           Tip: 목록 카드를 클릭하면 해당 투표 상세 페이지로 이동해요.
         </div>
-
+      </div>
+    </div>
+  );
+}
