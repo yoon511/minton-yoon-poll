@@ -62,14 +62,21 @@ async function onDeletePoll(e, pollId) {
   e.preventDefault();   // Link 이동 막기
   e.stopPropagation();  // 카드 클릭 이벤트 막기
 
+  console.log("삭제 버튼 클릭됨! pollId =", pollId);
+
+
   const ok = window.confirm("정말 이 투표를 삭제할까?");
   if (!ok) return;
 
   try {
+    console.log("deletePoll 호출 직전");
     await deletePoll(pollId);
+    console.log("deletePoll 호출 성공");
+
     await refresh(); // 목록 다시 불러오기
+    console.log("refresh 완료");
   } catch (err) {
-    console.error(err);
+    console.error("삭제 에러:", err);
     alert("삭제에 실패했어. 잠시 후 다시 시도해줘!");
   }
 }
